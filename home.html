@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Account Owner Profile</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,10 +21,16 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 300px;
-            position: relative;
         }
         .container h1 {
             color: #333;
+        }
+        .balance {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .last-updated {
+            color: #777;
         }
         .link {
             display: block;
@@ -38,56 +44,41 @@
         .link:hover {
             background-color: #0056b3;
         }
-        .menu {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .menu-button {
-            background-color: transparent;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #f9f9f9;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .dropdown-content a {
-            color: #333;
-            padding: 10px 20px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-        .menu:hover .dropdown-content {
-            display: block;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="menu">
-        <button class="menu-button">⋮</button>
-        <div class="dropdown-content">
-            <a href="signup.html">Sign Up</a>
-            <a href="login.html">Login</a>
-        </div>
-    </div>
-    <h1>Welcome</h1>
+    <h1>Profile</h1>
+    <p>Account Owner: John Doe</p>
+    <div class="balance" id="balance">KES 0.00</div>
+    <div class="last-updated" id="lastUpdated">Last updated: N/A</div>
     <a href="index.html" class="link">Home</a>
-    <a href="deposit.html" class="link">Deposit</a>
-    <a href="withdraw.html" class="link">Withdraw</a>
+    <a href="logout.html" class="link">Log Out</a>
 </div>
+
+<script>
+    const balanceElement = document.getElementById('balance');
+    const lastUpdatedElement = document.getElementById('lastUpdated');
+
+    // Simulate fetching the current balance from a server
+    function fetchBalance() {
+        // Mock data
+        const data = {
+            balance: 10500.00,  // Starting balance in KES
+            lastUpdated: new Date().toISOString()
+        };
+
+        balanceElement.textContent = `KES ${data.balance.toFixed(2)}`;
+        lastUpdatedElement.textContent = `Last updated: ${new Date(data.lastUpdated).toLocaleString()}`;
+    }
+
+    // Fetch the initial balance on page load
+    fetchBalance();
+
+    // Function to update balance on the page every 24 hours
+    setInterval(fetchBalance, 24 * 60 * 60 * 1000);
+</script>
 
 </body>
 </html>
