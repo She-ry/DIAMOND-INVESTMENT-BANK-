@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Owner Profile</title>
+    <title>Main Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,16 +25,21 @@
         .container h1 {
             color: #333;
         }
-        .balance {
-            font-size: 2em;
-            margin: 20px 0;
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
         }
-        .last-updated {
-            color: #777;
+        .btn:hover {
+            background-color: #0056b3;
         }
         .link {
             display: block;
-            margin: 10px 0;
+            margin: 20px 0 0;
             padding: 10px;
             background-color: #007bff;
             color: #fff;
@@ -44,40 +49,82 @@
         .link:hover {
             background-color: #0056b3;
         }
+        .input-field {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Profile</h1>
-    <p>Account Owner: John Doe</p>
-    <div class="balance" id="balance">KES 0.00</div>
-    <div class="last-updated" id="lastUpdated">Last updated: N/A</div>
+    <h1>Welcome, <span id="usernameDisplay"></span>!</h1>
+    <p>Your current balance is: <span id="balance">0</span> Ksh</p>
+    <input type="number" id="amount" class="input-field" placeholder="Amount">
+    <button onclick="deposit()" class="btn">Deposit</button>
+    <button onclick="withdraw()" class="btn">Withdraw</button>
     <a href="index.html" class="link">Home</a>
-    <a href="logout.html" class="link">Log Out</a>
 </div>
 
 <script>
-    const balanceElement = document.getElementById('balance');
-    const lastUpdatedElement = document.getElementById('lastUpdated');
+    function updateMainPage() {
+        const username = localStorage.getItem('username');
+        let balance = parseFloat(localStorage.getItem('balance')) || 0;
+        const lastUpdate = parseInt(localStorage.getItem('lastUpdate')) || Date.now();
+        const currentTime = Date.now();
+        const timeDiff = currentTime - lastUpdate;
 
-    // Simulate fetching the current balance from a server
-    function fetchBalance() {
-        // Mock data
-        const data = {
-            balance: 10500.00,  // Starting balance in KES
-            lastUpdated: new Date().toISOString()
-        };
+        // Update balance by 5% every 24 hours
+        if (timeDiff >= 86400000) {
+            const daysElapsed = Math.floor(timeDiff / 86400000);
+            balance *= Math.pow(1.05, daysElapsed);
+            localStorage.setItem('balance', balance.toFixed(2));
+            localStorage.setItem('lastUpdate', currentTime);
+        }
 
-        balanceElement.textContent = `KES ${data.balance.toFixed(2)}`;
-        lastUpdatedElement.textContent = `Last updated: ${new Date(data.lastUpdated).toLocaleString()}`;
+        if (username) {
+            document.getElementById('usernameDisplay').textContent = username;
+            document.getElementById('balance').textContent = balance.toFixed(2);
+        } else {
+            window.location.href = "home.html";
+        }
     }
 
-    // Fetch the initial balance on page load
-    fetchBalance();
+    function deposit() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        }
 
-    // Function to update balance on the page every 24 hours
-    setInterval(fetchBalance, 24 * 60 * 60 * 1000);
+        let balance = parseFloat(localStorage.getItem('balance')) || 0;
+        balance += amount;
+        localStorage.setItem('balance', balance.toFixed(2));
+        document.getElementById('balance').textContent = balance.toFixed(2);
+    }
+
+    function withdraw() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        }
+
+        let balance = parseFloat(localStorage.getItem('balance')) || 0;
+        if (amount > balance) {
+            alert('Insufficient balance');
+            return;
+        }
+
+        balance -= amount;
+        localStorage.setItem('balance', balance.toFixed(2));
+        document.getElementById('balance').textContent = balance.toFixed(2);
+    }
+
+    updateMainPage();
 </script>
 
 </body>
