@@ -19,49 +19,46 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
             width: 300px;
         }
         .container h1 {
-            text-align: center;
             color: #333;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .btn {
-            width: 100%;
+        .input-field {
+            width: calc(100% - 20px);
             padding: 10px;
-            background-color: #007bff;
-            border: none;
+            margin-top: 10px;
             border-radius: 4px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
+            border: 1px solid #ccc;
         }
-        .btn:hover {
+        .btn-submit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
             background-color: #0056b3;
+        }
+        .btn-submit:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
         .link {
             display: block;
-            margin-top: 10px;
-            text-align: center;
-            color: #007bff;
+            margin: 20px 0 0;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
             text-decoration: none;
+            border-radius: 4px;
         }
         .link:hover {
-            text-decoration: underline;
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -69,25 +66,28 @@
 
 <div class="container">
     <h1>Login</h1>
-    <form id="loginForm">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" class="btn">Login</button>
-    </form>
-    <a href="index.html" class="link">Back to Home</a>
+    <input type="text" id="username" class="input-field" placeholder="Username" oninput="validateForm()">
+    <input type="password" id="password" class="input-field" placeholder="Password" oninput="validateForm()">
+    <button id="loginButton" class="btn-submit" onclick="redirectToIndex()" disabled>Login</button>
 </div>
 
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('Login successful!');
-    });
+    function validateForm() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const loginButton = document.getElementById('loginButton');
+
+        if (username && password) {
+            loginButton.disabled = false;
+        } else {
+            loginButton.disabled = true;
+        }
+    }
+
+    function redirectToIndex() {
+        // Assuming the login process is successful
+        window.location.href = "index.html";
+    }
 </script>
 
 </body>
