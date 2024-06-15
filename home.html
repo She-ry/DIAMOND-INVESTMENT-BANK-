@@ -25,18 +25,6 @@
         .container h1 {
             color: #333;
         }
-        .btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
         .link {
             display: block;
             margin: 20px 0 0;
@@ -63,10 +51,7 @@
 <div class="container">
     <h1>Welcome, <span id="usernameDisplay"></span>!</h1>
     <p>Your current balance is: <span id="balance">0</span> Ksh</p>
-    <input type="number" id="amount" class="input-field" placeholder="Amount">
-    <button onclick="deposit()" class="btn">Deposit</button>
-    <button onclick="withdraw()" class="btn">Withdraw</button>
-    <a href="index.html" class="link">Home</a>
+    <a href="index.html" class="link">Back</a>
 </div>
 
 <script>
@@ -91,37 +76,6 @@
         } else {
             window.location.href = "home.html";
         }
-    }
-
-    function deposit() {
-        const amount = parseFloat(document.getElementById('amount').value);
-        if (isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid amount');
-            return;
-        }
-
-        let balance = parseFloat(localStorage.getItem('balance')) || 0;
-        balance += amount;
-        localStorage.setItem('balance', balance.toFixed(2));
-        document.getElementById('balance').textContent = balance.toFixed(2);
-    }
-
-    function withdraw() {
-        const amount = parseFloat(document.getElementById('amount').value);
-        if (isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid amount');
-            return;
-        }
-
-        let balance = parseFloat(localStorage.getItem('balance')) || 0;
-        if (amount > balance) {
-            alert('Insufficient balance');
-            return;
-        }
-
-        balance -= amount;
-        localStorage.setItem('balance', balance.toFixed(2));
-        document.getElementById('balance').textContent = balance.toFixed(2);
     }
 
     updateMainPage();
